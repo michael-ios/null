@@ -23,6 +23,14 @@
         input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
         .lang-btn.active { background-color: #f59e0b; color: #111827; }
         #micButton:disabled { cursor: not-allowed; background-color: #9ca3af; animation: none; }
+        /* Добавим стиль для ссылки в подвале */
+        #footer-text a {
+            color: #f59e0b; /* Цвет ссылки */
+            text-decoration: underline;
+        }
+        #footer-text a:hover {
+            color: #fbbf24; /* Цвет ссылки при наведении */
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-white flex items-center justify-center min-h-screen p-4">
@@ -87,7 +95,7 @@
         let isThinking = false;
 
         const uiStrings = {
-            'ru-RU': { micTitle: 'Голосовой ввод', statusTitle: 'Статус:', statusDefault: 'Ожидаю твоего вопроса...', textInputTitle: 'Или напиши Мне', textInputPlaceholder: 'Напиши свой вопрос здесь...', sendButton: 'Спросить', footer: 'Помни: "Не отвлекай меня на глупости". <a href="https://t.me/nulianstvo> [чатик нуллианцев] </a> ', userAsked: 'Ты спросил:', listening: 'Я слушаю... Говори.', thinking: 'Я размышляю... Тишина.', error: 'Произошла ошибка:', tryAgain: 'Попробуй еще раз.', alreadyListening: 'Ошибка. Похоже, Я уже слушаю.', noMicSupport: 'Твой браузер не поддерживает глас Мой. Напиши свой вопрос.', apiError: 'Мой глас сейчас недоступен. Попробуй позже.' },
+            'ru-RU': { micTitle: 'Голосовой ввод', statusTitle: 'Статус:', statusDefault: 'Ожидаю твоего вопроса...', textInputTitle: 'Или напиши Мне', textInputPlaceholder: 'Напиши свой вопрос здесь...', sendButton: 'Спросить', /* 1. ИСПРАВЛЕНА ССЫЛКА (добавлена кавычка и стили) */ footer: 'Помни: "Не отвлекай меня на глупости". <a href="https://t.me/nulianstvo" target="_blank" rel="noopener noreferrer">Присоединяйся к нуллианцам</a>', userAsked: 'Ты спросил:', listening: 'Я слушаю... Говори.', thinking: 'Я размышляю... Тишина.', error: 'Произошла ошибка:', tryAgain: 'Попробуй еще раз.', alreadyListening: 'Ошибка. Похоже, Я уже слушаю.', noMicSupport: 'Твой браузер не поддерживает глас Мой. Напиши свой вопрос.', apiError: 'Мой глас сейчас недоступен. Попробуй позже.' },
             'he-IL': { micTitle: 'קלט קולי', statusTitle: 'סטטוס:', statusDefault: 'ממתין לשאלתך...', textInputTitle: 'או כתוב לי', textInputPlaceholder: 'כתוב את שאלתך כאן...', sendButton: 'שאל', footer: 'זכור: "לא תנסו את ה׳ אלהיכם".', userAsked: 'שאלת:', listening: 'אני מקשיב... דבר.', thinking: 'אני מהרהר... שקט.', error: 'אירעה שגיאה:', tryAgain: 'נסה שוב.', alreadyListening: 'שגיאה. נראה שאני כבר מקשיב.', noMicSupport: 'הדפדפן שלך אינו תומך בקולי. כתוב את שאלתך.', apiError: 'קולי אינו זמין כעת. נסה מאוחר יותר.' }
         };
 
@@ -131,7 +139,8 @@
             document.getElementById('text-input-title').textContent = strings.textInputTitle;
             textInput.placeholder = strings.textInputPlaceholder;
             sendButton.textContent = strings.sendButton;
-            document.getElementById('footer-text').textContent = strings.footer;
+            /* 2. ИСПРАВЛЕНО СВОЙСТВО (textContent -> innerHTML) */
+            document.getElementById('footer-text').innerHTML = strings.footer;
             textInput.dir = lang === 'he-IL' ? 'rtl' : 'ltr';
             userQuestionEl.dir = lang === 'he-IL' ? 'rtl' : 'ltr';
             godsAnswerEl.dir = lang === 'he-IL' ? 'rtl' : 'ltr';
@@ -174,7 +183,6 @@
             }
         }
 
-        // --- ИЗМЕНЕНО ---
         // Эта функция теперь обращается к вашей бессерверной функции на Vercel
         async function getGodsAnswerFromServerless(userQuestion, lang) {
             // Указываем путь к нашей функции. Vercel разместит ее по адресу /api/ask
